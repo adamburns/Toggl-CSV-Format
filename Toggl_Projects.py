@@ -21,6 +21,13 @@ def definitions():
     resourceStrings = ["Internal", "External", "NA"]
     ASMX_FA = ["ASMX", "FundAmerica"]
     nontraded = ["Non-traded", "Nontraded"]
+
+def directoryStore():
+    if not os.path.exists("../Inputs"):
+        os.makedirs("../Inputs")
+    if not os.path.exists("../Outputs"):
+        os.makedirs("../Outputs")
+
 ##
 #Attempts to data import via pandas, if the file does not exist, then error prompt
 #This operation occurs for both 2016 and 2017 data sets
@@ -28,9 +35,9 @@ def definitions():
 def dataLoad():
     try:
         global toggle_preData
-        toggle_preData = pd.read_csv("Toggl_projects_2016-01-01_to_2016-12-31.csv")
+        toggle_preData = pd.read_csv("../Inputs/Toggl_projects_2016-01-01_to_2016-12-31.csv")
         global toggle_data
-        toggle_data = pd.read_csv("Toggl_projects_2017-01-01_to_2017-12-31.csv")
+        toggle_data = pd.read_csv("../Inputs/Toggl_projects_2017-01-01_to_2017-12-31.csv")
         toggle_data.columns=['Project type', 'Project', 'Hours', 'Resources', 'Private/public']
         toggle_preData.columns=['Project type', 'Project', 'Hours', 'Resources', 'Private/public']
 
@@ -126,18 +133,19 @@ def concatenateHours(str):
 ##
 def dataExit():
     try:
-        toggle_base_url = "Toggl_projects_"
+        toggle_base_url = "../Outputs/Toggl_projects_"
         toggle_timestamp = str(time.strftime("%m-%d-%y"))
         toggle_filetype = ".csv"
         toggle_url = toggle_base_url + toggle_timestamp + toggle_filetype
         toggle_data[['Project', 'Hours', 'Project type', 'Resources', 'Private/public']].to_csv(toggle_url,index=False)
-        os.remove("Toggl_projects_2017-01-01_to_2017-12-31.csv")
+        #os.remove("Toggl_projects_2017-01-01_to_2017-12-31.csv")
         sys.exit()
     except IOError:
         e.msgbox("Could not read file 2016 Toggl CSV file. Please re-download that file and put it in the same directory as this Python script.", "Error")
         sys.exit()
 
 if __name__ == '__main__':
+    directoryStore()
     dataLoad()
     definitions()
     dataFormat()
