@@ -13,11 +13,26 @@ import easygui as e
 import os
 import sys
 
+
+##
+#Defines global variable arrays
+##
+def definitions():
+    global projectStrings
+    global statusStrings
+    global resourceStrings
+    global ASMX_FA
+    global nontraded
+    projectStrings = ["ODD", "O&G", "Oil & Gas", "Reg A", "Essential", "Combined", "Interval Fund",
+                      "BDC", "DST", "Conservation Easement","Fund", "REIT", "Energy"]
+    statusStrings = ["Private", "Public", "NA"]
+    resourceStrings = ["Internal", "External", "NA"]
+    ASMX_FA = ["ASMX", "FundAmerica"]
+    nontraded = ["Non-traded", "Nontraded"]
 ##
 #Attempts to data import via pandas, if the file does not exist, then error prompt
 #This operation occurs for both 2016 and 2017 data sets
 ##
-
 def dataLoad():
     try:
         global toggle_preData
@@ -26,18 +41,7 @@ def dataLoad():
         toggle_data = pd.read_csv("Toggl_projects_2017-01-01_to_2017-12-31.csv")
         toggle_data.columns=['Project type', 'Project', 'Hours', 'Resources', 'Private/public']
         toggle_preData.columns=['Project type', 'Project', 'Hours', 'Resources', 'Private/public']
-        #Define the finite amount of Project Types
-        global projectStrings
-        projectStrings = ["ODD", "O&G", "Oil & Gas", "Reg A", "Essential", "Combined", "Interval Fund",
-                          "BDC", "DST", "Conservation Easement","Fund", "REIT", "Energy"]
-        global statusStrings
-        statusStrings = ["Private", "Public", "NA"]
-        global resourceStrings
-        resourceStrings = ["Internal", "External", "NA"]
-        global ASMX_FA
-        ASMX_FA = ["ASMX", "FundAmerica"]
-        global nontraded
-        nontraded = ["Non-traded", "Nontraded"]
+
     except IOError:
         e.msgbox("Could not read file Toggl CSV file. Please re-download that file and put it in the same directory as this Python script.", "Error")
         sys.exit()
@@ -143,5 +147,6 @@ def dataExit():
 
 if __name__ == '__main__':
     dataLoad()
+    definitions()
     dataFormat()
     dataExit()
