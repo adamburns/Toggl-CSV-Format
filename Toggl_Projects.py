@@ -138,7 +138,7 @@ def dataExit():
         toggle_filetype = ".csv"
         toggle_url = toggle_base_url + toggle_timestamp + toggle_filetype
         toggle_data[['Project', 'Hours', 'Project type', 'Resources', 'Private/public']].to_csv(toggle_url,index=False)
-        #os.remove("Toggl_projects_2017-01-01_to_2017-12-31.csv")
+        os.remove("Toggl_projects_2017-01-01_to_2017-12-31.csv")
         sys.exit()
     except IOError:
         e.msgbox("Could not read file 2016 Toggl CSV file. Please re-download that file and put it in the same directory as this Python script.", "Error")
