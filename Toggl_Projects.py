@@ -1,11 +1,3 @@
-
-# coding: utf-8
-
-# In[14]:
-
-
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import re
 import time
@@ -43,7 +35,7 @@ def dataLoad():
         toggle_preData.columns=['Project type', 'Project', 'Hours', 'Resources', 'Private/public']
 
     except IOError:
-        e.msgbox("Could not read file Toggl CSV file. Please re-download that file and put it in the same directory as this Python script.", "Error")
+        e.msgbox("Could not read file Toggl CSV file. Please re-download that file and put it in the Input folder", "Error")
         sys.exit()
 
 ##
