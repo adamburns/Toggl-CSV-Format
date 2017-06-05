@@ -28,16 +28,22 @@ def directoryStore():
     if not os.path.exists("../Outputs"):
         os.makedirs("../Outputs")
 
+def whatYear():
+    defaultYear = time.strftime("%Y")
+    thisYear = e.integerbox(msg="Enter the year you are interested in.", default=str(defaultYear),lowerbound=2015, upperbound=2100)
+    return thisYear
+
 ##
 #Attempts to data import via pandas, if the file does not exist, then error prompt
 #This operation occurs for both 2016 and 2017 data sets
 ##
 def dataLoad():
     try:
+        year = whatYear()
         global toggle_preData
-        toggle_preData = pd.read_csv("../Inputs/Toggl_projects_2016-01-01_to_2016-12-31.csv")
+        toggle_preData = pd.read_csv("../Inputs/Toggl_projects_" + str(year - 1) + "-01-01_to_" + str(year - 1) + "-12-31.csv")
         global toggle_data
-        toggle_data = pd.read_csv("../Inputs/Toggl_projects_2017-01-01_to_2017-12-31.csv")
+        toggle_data = pd.read_csv("../Inputs/Toggl_projects_" + str(year) + "-01-01_to_" + str(year) + "-12-31.csv")
         toggle_data.columns=['Project type', 'Project', 'Hours', 'Resources', 'Private/public']
         toggle_preData.columns=['Project type', 'Project', 'Hours', 'Resources', 'Private/public']
 
@@ -138,7 +144,7 @@ def dataExit():
         toggle_filetype = ".csv"
         toggle_url = toggle_base_url + toggle_timestamp + toggle_filetype
         toggle_data[['Project', 'Hours', 'Project type', 'Resources', 'Private/public']].to_csv(toggle_url,index=False)
-        os.remove("Toggl_projects_2017-01-01_to_2017-12-31.csv")
+        #os.remove("Toggl_projects_2017-01-01_to_2017-12-31.csv")
         sys.exit()
     except IOError:
         e.msgbox("Could not read file 2016 Toggl CSV file. Please re-download that file and put it in the same directory as this Python script.", "Error")
